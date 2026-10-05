@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🛒 Mercado Tech – Sua despensa inteligente</title>
+  
+  <!-- Bootstrap 5 + Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --primary: #0d6efd;
+      --secondary: #ff6b00;
+      --bg-light: #f8f9fa;
+      --shadow: 0 4px 20px rgba(0,0,0,0.06);
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-light);
+      padding-top: 70px;
+    }
+    .navbar-brand {
+      font-weight: 800;
+      font-size: 1.6rem;
+    }
+    .navbar-brand span {
+      color: var(--secondary);
+    }
+    .product-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 1.2rem;
+      box-shadow: var(--shadow);
+      transition: 0.3s;
+      height: 100%;
+      border: 1px solid #f0f0f0;
+      position: relative;
+    }
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    }
+    .product-card .price {
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 1.2rem;
+    }
+    .product-card .old-price {
+      text-decoration: line-through;
+      color: #999;
+      font-size: 0.85rem;
+      margin-right: 0.5rem;
+    }
+    .product-card .badge-category {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      font-size: 0.65rem;
+      background: var(--secondary);
+      color: #fff;
+      padding: 0.2rem 0.8rem;
+      border-radius: 20px;
+    }
+    .product-card .btn-add {
+      width: 100%;
+      border-radius: 30px;
+      font-weight: 600;
+      transition: 0.2s;
+    }
+    .product-card .btn-add:hover {
+      transform: scale(1.02);
+    }
+    .cart-sidebar {
+      position: sticky;
+      top: 80px;
+      background: #fff;
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      border: 1px solid #f0f0f0;
+      max-height: calc(100vh - 100px);
+      overflow-y: auto;
+    }
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .cart-item:last-child {
+      border-bottom: none;
+    }
+    .cart-item .qty-control {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .cart-item .qty-control button {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid #ddd;
+      background: #fff;
+      font-weight: 700;
+      transition: 0.2s;
+    }
+    .cart-item .qty-control button:hover {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    .cart-total {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+    .btn-whatsapp-final {
+      background: #25d366;
+      color: #fff;
+      font-weight: 700;
+      border: none;
+      border-radius: 30px;
+      padding: 0.8rem;
+      width: 100%;
+      transition: 0.3s;
+      margin-top: 1rem;
+    }
+    .btn-whatsapp-final:hover {
+      filter: brightness(1.05);
+      color: #fff;
+    }
+    .search-box {
+      border-radius: 30px;
+      border: 1px solid #ddd;
+      padding: 0.6rem 1.2rem;
+      width: 100%;
+      max-width: 400px;
+      transition: 0.3s;
+    }
+    .search-box:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(13,110,253,0.15);
+      outline: none;
+    }
+    .category-filter .btn {
+      border-radius: 30px;
+      font-weight: 600;
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .category-filter .btn.active {
+      background: var(--primary);
+      color: #fff;
+    }
+    .empty-cart {
+      color: #999;
+      text-align: center;
+      padding: 2rem 0;
+    }
+    @media (max-width: 768px) {
+      .cart-sidebar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        max-height: 50vh;
+        border-radius: 16px 16px 0 0;
+        z-index: 1000;
+        box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+        overflow-y: auto;
+      }
+      body {
+        padding-bottom: 60vh;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       NAVBAR
+  ============================================================ -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm">
+    <div class="container">
+      <a class="navbar-brand" href="#">Mercado<span>Tech</span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto align-items-center">
+          <li class="nav-item">
+            <a class="nav-link" href="#catalogo">Catálogo</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#carrinho" onclick="document.getElementById('carrinho').scrollIntoView({behavior:'smooth'})">
+              <i class="bi bi-cart3"></i> <span id="cartCount" class="badge bg-primary rounded-pill">0</span>
+            </a>
+          </li>
+          <li class="nav-item ms-2">
+            <span class="fw-bold text-primary" id="totalNav">R$ 0,00</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============================================================
+       HERO
+  ============================================================ -->
+  <section class="bg-primary text-white py-5">
+    <div class="container text-center">
+      <h1 class="display-5 fw-800">🛒 Sua despensa inteligente</h1>
+      <p class="lead">Escolha seus produtos, monte o carrinho e finalize pelo WhatsApp.</p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CATÁLOGO
+  ============================================================ -->
+  <section class="container py-4" id="catalogo">
+    <div class="row">
+      <!-- Barra de busca e filtros -->
+      <div class="col-12 mb-4 d-flex flex-wrap gap-2 align-items-center">
+        <input type="text" id="searchInput" class="search-box" placeholder="🔍 Buscar produto..." oninput="filterProducts()" />
+        <div class="category-filter d-flex flex-wrap">
+          <button class="btn btn-outline-secondary active" data-cat="todos" onclick="filterByCategory('todos', this)">Todos</button>
+          <button class="btn btn-outline-secondary" data-cat="Alimentos" onclick="filterByCategory('Alimentos', this)">Alimentos</button>
+          <button class="btn btn-outline-secondary" data-cat="Bebidas" onclick="filterByCategory('Bebidas', this)">Bebidas</button>
+          <button class="btn btn-outline-secondary" data-cat="Higiene" onclick="filterByCategory('Higiene', this)">Higiene</button>
+          <button class="btn btn-outline-secondary" data-cat="Limpeza" onclick="filterByCategory('Limpeza', this)">Limpeza</button>
+        </div>
+      </div>
+
+      <!-- Grid de produtos -->
+      <div class="col-lg-8" id="productGrid">
+        <div class="row g-3" id="productList">
+          <!-- Produtos serão inseridos via JavaScript -->
+        </div>
+      </div>
+
+      <!-- Carrinho (sidebar) -->
+      <div class="col-lg-4" id="carrinho">
+        <div class="cart-sidebar">
+          <h5 class="fw-700"><i class="bi bi-cart3"></i> Meu Carrinho</h5>
+          <div id="cartItems" class="mt-3">
+            <div class="empty-cart">Seu carrinho está vazio.</div>
+          </div>
+          <hr />
+          <div class="d-flex justify-content-between align-items-center">
+            <span class="fw-600">Total:</span>
+            <span class="cart-total" id="cartTotal">R$ 0,00</span>
+          </div>
+          <button class="btn-whatsapp-final" onclick="finalizarPedido()">
+            <i class="bi bi-whatsapp me-2"></i>Finalizar Pedido
+          </button>
+          <small class="text-muted d-block mt-2 text-center">* O frete será calculado pelo atendente no WhatsApp.</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <footer class="bg-dark text-white-50 py-4 mt-5">
+    <div class="container text-center">
+      <p class="mb-0">© 2026 Mercado Tech – Todos os produtos são fictícios para demonstração.</p>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       BOOTSTRAP JS
+  ============================================================ -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+  </script>
+
+  <!-- ============================================================
+       JAVASCRIPT PRINCIPAL (catalogo + carrinho + WhatsApp)
+  ============================================================ -->
+  <script>
+    // ============================================================
+    // 1. BASE DE DADOS DE PRODUTOS (mais de 50 itens)
+    // ============================================================
+    const produtos = [
+      // ALIMENTOS
+      { id: 1, nome: 'Arroz Branco 5kg', preco: 22.90, categoria: 'Alimentos', imagem: '🍚' },
+      { id: 2, nome: 'Feijão Preto 1kg', preco: 8.50, categoria: 'Alimentos', imagem: '🫘' },
+      { id: 3, nome: 'Macarrão Espaguete 500g', preco: 4.90, categoria: 'Alimentos', imagem: '🍝' },
+      { id: 4, nome: 'Açúcar Refinado 1kg', preco: 3.99, categoria: 'Alimentos', imagem: '🍬' },
+      { id: 5, nome: 'Café Torrado 500g', preco: 12.90, categoria: 'Alimentos', imagem: '☕' },
+      { id: 6, nome: 'Óleo de Soja 900ml', preco: 7.50, categoria: 'Alimentos', imagem: '🫒' },
+      { id: 7, nome: 'Farinha de Trigo 1kg', preco: 4.50, categoria: 'Alimentos', imagem: '🌾' },
+      { id: 8, nome: 'Leite UHT 1L', preco: 4.89, categoria: 'Alimentos', imagem: '🥛' },
+      { id: 9, nome: 'Ovos Brancos 30un', preco: 12.00, categoria: 'Alimentos', imagem: '🥚' },
+      { id: 10, nome: 'Manteiga 200g', preco: 8.90, categoria: 'Alimentos', imagem: '🧈' },
+      { id: 11, nome: 'Pão de Forma 400g', preco: 6.50, categoria: 'Alimentos', imagem: '🍞' },
+      { id: 12, nome: 'Biscoito Cream Cracker 200g', preco: 3.20, categoria: 'Alimentos', imagem: '🍪' },
+      { id: 13, nome: 'Sardinha em Óleo 125g', preco: 4.30, categoria: 'Alimentos', imagem: '🐟' },
+      { id: 14, nome: 'Molho de Tomate 340g', preco: 2.80, categoria: 'Alimentos', imagem: '🍅' },
+      { id: 15, nome: 'Ervilha em Conserva 200g', preco: 3.10, categoria: 'Alimentos', imagem: '🥫' },
+      { id: 16, nome: 'Milho Verde 200g', preco: 2.90, categoria: 'Alimentos', imagem: '🌽' },
+      { id: 17, nome: 'Sopa Instantânea 60g', preco: 1.80, categoria: 'Alimentos', imagem: '🍜' },
+      { id: 18, nome: 'Chocolate em Pó 400g', preco: 7.80, categoria: 'Alimentos', imagem: '🍫' },
+      { id: 19, nome: 'Granola 300g', preco: 9.90, categoria: 'Alimentos', imagem: '🥣' },
+      { id: 20, nome: 'Azeite de Oliva 500ml', preco: 18.90, categoria: 'Alimentos', imagem: '🫒' },
+      // BEBIDAS
+      { id: 21, nome: 'Refrigerante Cola 2L', preco: 8.50, categoria: 'Bebidas', imagem: '🥤' },
+      { id: 22, nome: 'Suco de Laranja 1L', preco: 6.90, categoria: 'Bebidas', imagem: '🧃' },
+      { id: 23, nome: 'Água Mineral 1,5L', preco: 2.50, categoria: 'Bebidas', imagem: '💧' },
+      { id: 24, nome: 'Cerveja Pilsen 350ml', preco: 3.20, categoria: 'Bebidas', imagem: '🍺' },
+      { id: 25, nome: 'Vinho Tinto 750ml', preco: 22.00, categoria: 'Bebidas', imagem: '🍷' },
+      { id: 26, nome: 'Energético 250ml', preco: 6.00, categoria: 'Bebidas', imagem: '⚡' },
+      { id: 27, nome: 'Chá Mate 1L', preco: 4.50, categoria: 'Bebidas', imagem: '🍵' },
+      { id: 28, nome: 'Leite Condensado 395g', preco: 5.50, categoria: 'Bebidas', imagem: '🥫' },
+      { id: 29, nome: 'Creme de Leite 200g', preco: 3.80, categoria: 'Bebidas', imagem: '🥛' },
+      { id: 30, nome: 'Água de Coco 1L', preco: 5.90, categoria: 'Bebidas', imagem: '🥥' },
+      // HIGIENE
+      { id: 31, nome: 'Sabonete 90g', preco: 1.99, categoria: 'Higiene', imagem: '🧼' },
+      { id: 32, nome: 'Shampoo 350ml', preco: 12.90, categoria: 'Higiene', imagem: '🧴' },
+      { id: 33, nome: 'Condicionador 350ml', preco: 12.90, categoria: 'Higiene', imagem: '🧴' },
+      { id: 34, nome: 'Creme Dental 90g', preco: 4.50, categoria: 'Higiene', imagem: '🪥' },
+      { id: 35, nome: 'Desodorante Roll-on 50ml', preco: 7.20, categoria: 'Higiene', imagem: '🧴' },
+      { id: 36, nome: 'Papel Higiênico 20m', preco: 6.80, categoria: 'Higiene', imagem: '🧻' },
+      { id: 37, nome: 'Escova de Dentes', preco: 3.50, categoria: 'Higiene', imagem: '🪥' },
+      { id: 38, nome: 'Fio Dental 50m', preco: 4.10, categoria: 'Higiene', imagem: '🧵' },
+      { id: 39, nome: 'Absorvente 8un', preco: 6.30, categoria: 'Higiene', imagem: '🩸' },
+      { id: 40, nome: 'Lenço Umedecido 50un', preco: 5.20, categoria: 'Higiene', imagem: '🧻' },
+      // LIMPEZA
+      { id: 41, nome: 'Detergente 500ml', preco: 2.80, categoria: 'Limpeza', imagem: '🧴' },
+      { id: 42, nome: 'Água Sanitária 1L', preco: 3.50, categoria: 'Limpeza', imagem: '🧼' },
+      { id: 43, nome: 'Desinfetante 1L', preco: 5.90, categoria: 'Limpeza', imagem: '🧹' },
+      { id: 44, nome: 'Esponja de Aço 8un', preco: 2.20, categoria: 'Limpeza', imagem: '🧽' },
+      { id: 45, nome: 'Saco de Lixo 30L', preco: 4.80, categoria: 'Limpeza', imagem: '🗑️' },
+      { id: 46, nome: 'Lustra Móveis 500ml', preco: 7.20, categoria: 'Limpeza', imagem: '🪣' },
+      { id: 47, nome: 'Sabão em Pó 1kg', preco: 8.90, categoria: 'Limpeza', imagem: '🧺' },
+      { id: 48, nome: 'Amaciante 1L', preco: 6.50, categoria: 'Limpeza', imagem: '🧴' },
+      { id: 49, nome: 'Cloro 1L', preco: 4.30, categoria: 'Limpeza', imagem: '🧪' },
+      { id: 50, nome: 'Pano de Chão', preco: 3.90, categoria: 'Limpeza', imagem: '🧹' },
+      { id: 51, nome: 'Vassoura', preco: 12.00, categoria: 'Limpeza', imagem: '🧹' },
+      { id: 52, nome: 'Rodo', preco: 10.50, categoria: 'Limpeza', imagem: '🪣' }
+    ];
+
+    // ============================================================
+    // 2. ESTADO DO CARRINHO
+    // ============================================================
+    let carrinho = {}; // { id: quantidade }
+
+    // ============================================================
+    // 3. FUNÇÕES DE RENDERIZAÇÃO
+    // ============================================================
+
+    // Renderiza a lista de produtos (com filtro)
+    function renderProdutos(filtro = 'todos', termo = '') {
+      const container = document.getElementById('productList');
+      container.innerHTML = '';
+
+      let filtered = produtos;
+      if (filtro !== 'todos') {
+        filtered = filtered.filter(p => p.categoria === filtro);
+      }
+      if (termo.trim() !== '') {
+        const lower = termo.toLowerCase();
+        filtered = filtered.filter(p => p.nome.toLowerCase().includes(lower));
+      }
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div class="col-12 text-center text-muted py-5">Nenhum produto encontrado.</div>`;
+        return;
+      }
+
+      filtered.forEach(p => {
+        const qtd = carrinho[p.id] || 0;
+        const col = document.createElement('div');
+        col.className = 'col-md-4 col-sm-6';
+        col.innerHTML = `
+          <div class="product-card">
+            <span class="badge-category">${p.categoria}</span>
+            <div style="font-size:2.5rem;text-align:center;">${p.imagem}</div>
+            <h6 class="fw-700 mt-2">${p.nome}</h6>
+            <div>
+              <span class="price">R$ ${p.preco.toFixed(2)}</span>
+              ${p.preco > 10 ? `<span class="old-price">R$ ${(p.preco * 1.2).toFixed(2)}</span>` : ''}
+            </div>
+            <div class="d-flex align-items-center gap-2 mt-2">
+              <button class="btn btn-outline-danger btn-sm" onclick="alterarQuantidade(${p.id}, -1)" ${qtd === 0 ? 'disabled' : ''}>-</button>
+              <span class="fw-700" style="min-width:30px;text-align:center;">${qtd}</span>
+              <button class="btn btn-outline-success btn-sm" onclick="alterarQuantidade(${p.id}, 1)">+</button>
+              <button class="btn btn-primary btn-add btn-sm" onclick="adicionarAoCarrinho(${p.id})">
+                <i class="bi bi-cart-plus"></i> Adicionar
+              </button>
+            </div>
+          </div>
+        `;
+        container.appendChild(col);
+      });
+    }
+
+    // Atualiza o carrinho (UI e totais)
+    function atualizarCarrinho() {
+      const cartItems = document.getElementById('cartItems');
+      const totalElement = document.getElementById('cartTotal');
+      const cartCount = document.getElementById('cartCount');
+      const totalNav = document.getElementById('totalNav');
+
+      // Limpa carrinho
+      cartItems.innerHTML = '';
+
+      // Calcula total
+      let total = 0;
+      let count = 0;
+
+      const keys = Object.keys(carrinho);
+      if (keys.length === 0) {
+        cartItems.innerHTML = `<div class="empty-cart">Seu carrinho está vazio.</div>`;
+        totalElement.textContent = 'R$ 0,00';
+        cartCount.textContent = '0';
+        totalNav.textContent = 'R$ 0,00';
+        return;
+      }
+
+      // Monta lista de itens
+      keys.forEach(id => {
+        const qtd = carrinho[id];
+        const produto = produtos.find(p => p.id === parseInt(id));
+        if (!produto) return;
+        const subtotal = produto.preco * qtd;
+        total += subtotal;
+        count += qtd;
+
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+        div.innerHTML = `
+          <div>
+            <strong>${produto.nome}</strong>
+            <div class="text-muted small">R$ ${produto.preco.toFixed(2)}</div>
+          </div>
+          <div class="qty-control">
+            <button onclick="alterarQuantidade(${produto.id}, -1)">−</button>
+            <span>${qtd}</span>
+            <button onclick="alterarQuantidade(${produto.id}, 1)">+</button>
+            <button class="btn btn-sm btn-danger" onclick="removerProduto(${produto.id})"><i class="bi bi-trash3"></i></button>
+          </div>
+        `;
+        cartItems.appendChild(div);
+      });
+
+      totalElement.textContent = `R$ ${total.toFixed(2)}`;
+      cartCount.textContent = count;
+      totalNav.textContent = `R$ ${total.toFixed(2)}`;
+    }
+
+    // ============================================================
+    // 4. FUNÇÕES DE MANIPULAÇÃO DO CARRINHO
+    // ============================================================
+
+    function adicionarAoCarrinho(id) {
+      if (!carrinho[id]) carrinho[id] = 0;
+      carrinho[id]++;
+      atualizarCarrinho();
+      renderProdutos(document.querySelector('.category-filter .active')?.dataset?.cat || 'todos', document.getElementById('searchInput').value);
+    }
+
+    function alterarQuantidade(id, delta) {
+      if (!carrinho[id]) carrinho[id] = 0;
+      carrinho[id] += delta;
+      if (carrinho[id] <= 0) {
+        delete carrinho[id];
+      }
+      atualizarCarrinho();
+      renderProdutos(document.querySelector('.category-filter .active')?.dataset?.cat || 'todos', document.getElementById('searchInput').value);
+    }
+
+    function removerProduto(id) {
+      delete carrinho[id];
+      atualizarCarrinho();
+      renderProdutos(document.querySelector('.category-filter .active')?.dataset?.cat || 'todos', document.getElementById('searchInput').value);
+    }
+
+    // ============================================================
+    // 5. FILTROS E BUSCA
+    // ============================================================
+
+    let currentCategory = 'todos';
+
+    function filterByCategory(cat, btn) {
+      currentCategory = cat;
+      document.querySelectorAll('.category-filter .btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      filterProducts();
+    }
+
+    function filterProducts() {
+      const termo = document.getElementById('searchInput').value;
+      renderProdutos(currentCategory, termo);
+    }
+
+    // ============================================================
+    // 6. FINALIZAR PEDIDO → WHATSAPP
+    // ============================================================
+
+    function finalizarPedido() {
+      const keys = Object.keys(carrinho);
+      if (keys.length === 0) {
+        alert('Seu carrinho está vazio! Adicione alguns produtos antes de finalizar.');
+        return;
+      }
+
+      let mensagem = '🛒 *PEDIDO - MERCADO TECH*%0A%0A';
+      let total = 0;
+
+      keys.forEach(id => {
+        const qtd = carrinho[id];
+        const produto = produtos.find(p => p.id === parseInt(id));
+        if (!produto) return;
+        const subtotal = produto.preco * qtd;
+        total += subtotal;
+        mensagem += `*${produto.nome}* – ${qtd} unidade(s) – R$ ${subtotal.toFixed(2)}%0A`;
+      });
+
+      mensagem += `%0A*Subtotal:* R$ ${total.toFixed(2)}%0A`;
+      mensagem += `%0A*Observações:* Favor calcular frete e confirmar disponibilidade.%0A`;
+      mensagem += `%0A📲 *Cliente:* (informar no chat)`;
+
+      const url = `https://wa.me/5521998486422?text=${mensagem}`;
+      window.open(url, '_blank');
+
+      // (Opcional) Limpar carrinho após enviar? Deixamos a critério do usuário.
+      // Se quiser resetar, descomente a linha abaixo:
+      // carrinho = {}; atualizarCarrinho(); renderProdutos(currentCategory, document.getElementById('searchInput').value);
+    }
+
+    // ============================================================
+    // 7. INICIALIZAÇÃO
+    // ============================================================
+
+    window.onload = function() {
+      renderProdutos('todos', '');
+      atualizarCarrinho();
+    };
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <!-- ============================================================
+       META TAGS ESSENCIAIS (SEO + RESPONSIVIDADE)
+  ============================================================ -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vox Digital – Agência de Marketing Digital</title>
+  <meta name="description" content="A Vox Digital ajuda sua empresa a crescer com estratégias de marketing digital, SEO, mídia paga e conteúdo. Resultados reais em 90 dias." />
+  <meta name="keywords" content="agência de marketing digital, SEO, Google Ads, growth hacking, marketing de conteúdo" />
+  <meta name="author" content="Vox Digital" />
+  <meta property="og:title" content="Vox Digital – Agência de Marketing Digital" />
+  <meta property="og:description" content="Estratégias de crescimento para negócios locais e e-commerces." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://voxdigital.com.br" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://voxdigital.com.br" />
+
+  <!-- ============================================================
+       BOOTSTRAP 5 + ICONS + FONTES
+  ============================================================ -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- ============================================================
+       ESTILOS PERSONALIZADOS (CSS)
+  ============================================================ -->
+  <style>
+    /* ── TOKENS ── */
+    :root {
+      --primary: #6C3CE1;
+      --primary-dark: #4B2A9E;
+      --secondary: #00C9A7;
+      --dark: #0B0C10;
+      --light: #F8F9FD;
+      --gray: #6C757D;
+      --font: 'Inter', sans-serif;
+      --shadow: 0 12px 40px rgba(108, 60, 225, 0.15);
+      --radius: 16px;
+    }
+
+    /* ── RESET ── */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      color: var(--dark);
+      background: #fff;
+      overflow-x: hidden;
+    }
+    a { text-decoration: none; }
+    img { max-width: 100%; height: auto; }
+
+    /* ── NAVBAR ── */
+    .navbar-custom {
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+      padding: 12px 0;
+      transition: all 0.3s;
+    }
+    .navbar-custom .navbar-brand {
+      font-weight: 800;
+      font-size: 1.6rem;
+      color: var(--primary);
+    }
+    .navbar-custom .navbar-brand span { color: var(--secondary); }
+    .navbar-custom .nav-link {
+      font-weight: 600;
+      color: var(--dark) !important;
+      margin: 0 8px;
+      transition: color 0.2s;
+    }
+    .navbar-custom .nav-link:hover,
+    .navbar-custom .nav-link.active {
+      color: var(--primary) !important;
+    }
+    .btn-outline-primary-custom {
+      border: 2px solid var(--primary);
+      color: var(--primary);
+      border-radius: 30px;
+      padding: 0.4rem 1.4rem;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+    .btn-outline-primary-custom:hover {
+      background: var(--primary);
+      color: #fff;
+    }
+    .btn-primary-custom {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+      padding: 0.6rem 1.8rem;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+    .btn-primary-custom:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(108,60,225,0.3);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 140px 0 80px;
+      background: linear-gradient(135deg, #F8F9FD 0%, #EDF0FB 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -30%;
+      right: -10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(108,60,225,0.08) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .hero h1 {
+      font-weight: 800;
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      line-height: 1.1;
+      color: var(--dark);
+    }
+    .hero h1 em {
+      font-style: normal;
+      color: var(--primary);
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p.lead {
+      font-size: 1.15rem;
+      color: var(--gray);
+      max-width: 500px;
+    }
+    .hero-stats {
+      display: flex;
+      gap: 2.5rem;
+      margin-top: 2.5rem;
+    }
+    .hero-stats strong {
+      display: block;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+    .hero-stats span {
+      font-size: 0.85rem;
+      color: var(--gray);
+    }
+    .hero-img-wrapper {
+      position: relative;
+    }
+    .hero-img-wrapper img {
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      width: 100%;
+    }
+    .hero-badge-float {
+      position: absolute;
+      bottom: -20px;
+      right: -20px;
+      background: #fff;
+      padding: 1rem 1.8rem;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .hero-badge-float i {
+      font-size: 2.2rem;
+      color: var(--secondary);
+    }
+
+    /* ── SEÇÕES ── */
+    .section-padding {
+      padding: 80px 0;
+    }
+    .section-label {
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.8rem;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    .section-title {
+      font-weight: 800;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      color: var(--dark);
+    }
+    .section-subtitle {
+      color: var(--gray);
+      max-width: 600px;
+    }
+
+    /* ── SERVIÇOS (CARDS) ── */
+    .service-card {
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 2rem 1.5rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+      transition: all 0.3s;
+      height: 100%;
+      border: 1px solid #f0f0f5;
+      text-align: center;
+    }
+    .service-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow);
+      border-color: var(--primary);
+    }
+    .service-card .icon {
+      width: 60px;
+      height: 60px;
+      background: var(--light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.2rem;
+      font-size: 1.8rem;
+      color: var(--primary);
+      transition: 0.3s;
+    }
+    .service-card:hover .icon {
+      background: var(--primary);
+      color: #fff;
+    }
+    .service-card h5 {
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+    }
+    .service-card p {
+      color: var(--gray);
+      font-size: 0.92rem;
+    }
+
+    /* ── PORTFÓLIO ── */
+    .portfolio-item {
+      border-radius: var(--radius);
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+    }
+    .portfolio-item img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      transition: 0.5s;
+    }
+    .portfolio-item:hover img {
+      transform: scale(1.05);
+    }
+    .portfolio-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 1.5rem 1rem;
+      background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+      color: #fff;
+    }
+    .portfolio-overlay h6 {
+      font-weight: 700;
+      margin-bottom: 0.2rem;
+    }
+    .portfolio-overlay small {
+      opacity: 0.8;
+    }
+
+    /* ── DEPOIMENTOS (CARROSSEL) ── */
+    .testimonial-card {
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 2rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+      border: 1px solid #f0f0f5;
+      height: 100%;
+    }
+    .testimonial-card .stars {
+      color: #FFB800;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+    .testimonial-card p {
+      color: var(--dark);
+      font-style: italic;
+      line-height: 1.6;
+    }
+    .testimonial-card .author {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-top: 1.2rem;
+    }
+    .testimonial-card .avatar {
+      width: 48px;
+      height: 48px;
+      background: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+
+    /* ── BLOG / ARTIGOS ── */
+    .blog-card {
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+      transition: 0.3s;
+      height: 100%;
+      border: 1px solid #f0f0f5;
+    }
+    .blog-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow);
+    }
+    .blog-card img {
+      height: 180px;
+      object-fit: cover;
+      width: 100%;
+    }
+    .blog-card .body {
+      padding: 1.2rem 1.2rem 1.6rem;
+    }
+    .blog-card .body .tag {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--primary);
+      letter-spacing: 0.06em;
+    }
+    .blog-card .body h6 {
+      font-weight: 700;
+      margin: 0.4rem 0 0.6rem;
+    }
+    .blog-card .body p {
+      font-size: 0.9rem;
+      color: var(--gray);
+    }
+    .blog-card .body a {
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    /* ── CONTATO ── */
+    .contact-section {
+      background: var(--light);
+    }
+    .contact-form .form-control {
+      border: 1px solid #dde0e8;
+      border-radius: 12px;
+      padding: 0.7rem 1.2rem;
+      font-size: 0.95rem;
+      transition: 0.3s;
+    }
+    .contact-form .form-control:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(108,60,225,0.1);
+    }
+    .contact-info-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.2rem;
+    }
+    .contact-info-item i {
+      width: 40px;
+      height: 40px;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark);
+      color: rgba(255,255,255,0.7);
+      padding: 60px 0 30px;
+    }
+    footer .brand {
+      font-weight: 800;
+      font-size: 1.6rem;
+      color: #fff;
+    }
+    footer .brand span { color: var(--secondary); }
+    footer a {
+      color: rgba(255,255,255,0.6);
+      transition: 0.2s;
+    }
+    footer a:hover { color: var(--secondary); }
+    footer .social a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 50%;
+      margin-right: 8px;
+      transition: 0.3s;
+    }
+    footer .social a:hover {
+      background: var(--primary);
+      color: #fff;
+    }
+    footer hr {
+      border-color: rgba(255,255,255,0.08);
+      margin: 2rem 0;
+    }
+
+    /* ── RESPONSIVO ── */
+    @media (max-width: 768px) {
+      .hero { padding: 100px 0 60px; text-align: center; }
+      .hero p.lead { margin: 0 auto; }
+      .hero-stats { justify-content: center; }
+      .hero-badge-float { position: static; margin-top: 1rem; }
+      .section-padding { padding: 50px 0; }
+      .navbar-custom .navbar-brand { font-size: 1.4rem; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ============================================================
+       NAVBAR
+  ============================================================ -->
+  <nav class="navbar navbar-expand-lg navbar-custom fixed-top" aria-label="Navegação principal">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        Vox<span>Digital</span>
+      </a>
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu"
+        aria-controls="navMenu" aria-expanded="false" aria-label="Abrir menu">
+        <i class="bi bi-list fs-2"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-1 gap-lg-2 py-3 py-lg-0">
+          <li class="nav-item"><a class="nav-link active" href="#home">Início</a></li>
+          <li class="nav-item"><a class="nav-link" href="#servicos">Serviços</a></li>
+          <li class="nav-item"><a class="nav-link" href="#portfolio">Portfólio</a></li>
+          <li class="nav-item"><a class="nav-link" href="#sobre">Sobre</a></li>
+          <li class="nav-item"><a class="nav-link" href="#blog">Blog</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contato">Contato</a></li>
+          <li class="nav-item ms-lg-2">
+            <a href="#contato" class="btn btn-primary-custom btn-sm">Fale conosco</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============================================================
+       HERO
+  ============================================================ -->
+  <section class="hero" id="home" aria-labelledby="hero-title">
+    <div class="container">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6">
+          <span class="section-label">🚀 Resultados em 90 dias</span>
+          <h1 id="hero-title">
+            Marketing digital que <em>gera vendas</em> de verdade.
+          </h1>
+          <p class="lead">
+            A Vox Digital une dados, criatividade e tecnologia para escalar seu negócio. Atendemos comércios locais, e-commerces e startups.
+          </p>
+          <div class="d-flex flex-wrap gap-3 mt-4">
+            <a href="#contato" class="btn btn-primary-custom">
+              <i class="bi bi-rocket me-2"></i>Quero crescer
+            </a>
+            <a href="#servicos" class="btn btn-outline-primary-custom">Ver serviços</a>
+          </div>
+          <div class="hero-stats">
+            <div>
+              <strong>+120</strong>
+              <span>clientes ativos</span>
+            </div>
+            <div>
+              <strong>4.9★</strong>
+              <span>avaliação média</span>
+            </div>
+            <div>
+              <strong>3x</strong>
+              <span>ROI médio em 6 meses</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="hero-img-wrapper">
+            <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&q=80" alt="Equipe Vox Digital em reunião" loading="lazy" class="rounded-4 shadow-lg" />
+            <div class="hero-badge-float">
+              <i class="bi bi-bar-chart-fill"></i>
+              <div>
+                <strong style="display:block;color:var(--dark);">+230%</strong>
+                <small style="font-size:0.8rem;color:var(--gray);">tráfego orgânico</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SERVIÇOS
+  ============================================================ -->
+  <section class="section-padding" id="servicos" aria-labelledby="servicos-title">
+    <div class="container">
+      <div class="text-center mb-5">
+        <p class="section-label">O que fazemos</p>
+        <h2 class="section-title" id="servicos-title">Nossos serviços</h2>
+        <p class="section-subtitle mx-auto">Estratégias personalizadas para cada etapa do funil de vendas.</p>
+      </div>
+      <div class="row g-4">
+        <!-- Card 1 -->
+        <div class="col-md-6 col-lg-4">
+          <div class="service-card">
+            <div class="icon"><i class="bi bi-graph-up-arrow"></i></div>
+            <h5>SEO & Conteúdo</h5>
+            <p>Otimização para Google, produção de artigos e landing pages que convertem.</p>
+          </div>
+        </div>
+        <!-- Card 2 -->
+        <div class="col-md-6 col-lg-4">
+          <div class="service-card">
+            <div class="icon"><i class="bi bi-megaphone"></i></div>
+            <h5>Mídia Paga</h5>
+            <p>Google Ads, Meta Ads (Facebook/Instagram) com gestão de lances e criativos A/B.</p>
+          </div>
+        </div>
+        <!-- Card 3 -->
+        <div class="col-md-6 col-lg-4">
+          <div class="service-card">
+            <div class="icon"><i class="bi bi-envelope-paper"></i></div>
+            <h5>E-mail Marketing</h5>
+            <p>Automação, nutrição de leads e campanhas de alto impacto com análise de métricas.</p>
+          </div>
+        </div>
+        <!-- Card 4 -->
+        <div class="col-md-6 col-lg-4">
+          <div class="service-card">
+            <div class="icon"><i class="bi bi-people"></i></div>
+            <h5>Growth Hacking</h5>
+            <p>Estratégias de crescimento acelerado com testes A/B, funis e retenção.</p>
+          </div>
+        </div>
+        <!-- Card 5 -->
+        <div class="col-md-6 col-lg-4">
+          <div class="service-card">
+            <div class="icon"><i class="bi bi-laptop"></i></div>
+            <h5>Landing Pages</h5>
+            <p>Criação de páginas de alta conversão com design focado em UX e CRO.</p>
+          </div>
+        </div>
+        <!-- Card 6 -->
+        <div class="col-md-6 col-lg-4">
+          <div class="service-card">
+            <div class="icon"><i class="bi bi-bar-chart-fill"></i></div>
+            <h5>Analytics & BI</h5>
+            <p>Dashboards customizados, análise de dados e relatórios semanais acionáveis.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PORTFÓLIO
+  ============================================================ -->
+  <section class="section-padding bg-light" id="portfolio" aria-labelledby="portfolio-title">
+    <div class="container">
+      <div class="text-center mb-5">
+        <p class="section-label">Cases reais</p>
+        <h2 class="section-title" id="portfolio-title">Projetos que entregamos</h2>
+        <p class="section-subtitle mx-auto">Alguns dos resultados que ajudamos a construir.</p>
+      </div>
+      <div class="row g-4">
+        <!-- Item 1 -->
+        <div class="col-md-6 col-lg-3">
+          <div class="portfolio-item">
+            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80" alt="Dashboard de analytics" loading="lazy" />
+            <div class="portfolio-overlay">
+              <h6>E-commerce de moda</h6>
+              <small>+180% receita em 4 meses</small>
+            </div>
+          </div>
+        </div>
+        <!-- Item 2 -->
+        <div class="col-md-6 col-lg-3">
+          <div class="portfolio-item">
+            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80" alt="Gestão de mídias sociais" loading="lazy" />
+            <div class="portfolio-overlay">
+              <h6>Clínica odontológica</h6>
+              <small>+300 leads qualificados</small>
+            </div>
+          </div>
+        </div>
+        <!-- Item 3 -->
+        <div class="col-md-6 col-lg-3">
+          <div class="portfolio-item">
+            <img src="https://images.unsplash.com/photo-1533750349088-cd871a92f312?w=600&q=80" alt="Landing page de alta conversão" loading="lazy" />
+            <div class="portfolio-overlay">
+              <h6>Startup de SaaS</h6>
+              <small>Taxa de conversão de 14%</small>
+            </div>
+          </div>
+        </div>
+        <!-- Item 4 -->
+        <div class="col-md-6 col-lg-3">
+          <div class="portfolio-item">
+            <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=600&q=80" alt="Equipe criativa" loading="lazy" />
+            <div class="portfolio-overlay">
+              <h6>Restaurante local</h6>
+              <small>+70% reservas via site</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SOBRE
+  ============================================================ -->
+  <section class="section-padding" id="sobre" aria-labelledby="sobre-title">
+    <div class="container">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6">
+          <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80" alt="Equipe Vox Digital" loading="lazy" class="rounded-4 shadow-lg" />
+        </div>
+        <div class="col-lg-6">
+          <p class="section-label">Quem somos</p>
+          <h2 class="section-title" id="sobre-title">Uma agência com alma de startup</h2>
+          <div style="width:60px;height:4px;background:var(--primary);border-radius:4px;margin:1rem 0 1.5rem;"></div>
+          <p style="color:var(--gray);line-height:1.8;">
+            Fundada em 2020, a Vox Digital reúne especialistas em marketing, design e dados.
+            Acreditamos que cada negócio tem um vox (voz) única – e nosso trabalho é amplificá-la
+            com estratégias baseadas em evidências e criatividade sem limites.
+          </p>
+          <ul class="list-unstyled" style="margin-top:1.2rem;">
+            <li style="display:flex;align-items:center;gap:0.8rem;margin-bottom:0.6rem;">
+              <i class="bi bi-check-circle-fill" style="color:var(--secondary);"></i>
+              <span><strong>+50</strong> projetos entregues</span>
+            </li>
+            <li style="display:flex;align-items:center;gap:0.8rem;margin-bottom:0.6rem;">
+              <i class="bi bi-check-circle-fill" style="color:var(--secondary);"></i>
+              <span>Equipe 100% remota e multidisciplinar</span>
+            </li>
+            <li style="display:flex;align-items:center;gap:0.8rem;">
+              <i class="bi bi-check-circle-fill" style="color:var(--secondary);"></i>
+              <span>Parceiros certificados Google e Meta</span>
+            </li>
+          </ul>
+          <a href="#contato" class="btn btn-primary-custom mt-3">Falar com um especialista</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       DEPOIMENTOS (CARROSSEL)
+  ============================================================ -->
+  <section class="section-padding bg-light" id="depoimentos" aria-labelledby="depoimentos-title">
+    <div class="container">
+      <div class="text-center mb-5">
+        <p class="section-label">Depoimentos</p>
+        <h2 class="section-title" id="depoimentos-title">O que nossos clientes dizem</h2>
+      </div>
+      <div id="carouselDepoimentos" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <div class="row justify-content-center">
+              <div class="col-md-8 col-lg-6">
+                <div class="testimonial-card">
+                  <div class="stars">★★★★★</div>
+                  <p>“A Vox Digital transformou nosso e-commerce. Em 3 meses, duplicamos as vendas e reduzimos o custo de aquisição em 35%. Equipe incrível!”</p>
+                  <div class="author">
+                    <div class="avatar">MR</div>
+                    <div>
+                      <strong>Mariana R.</strong>
+                      <small style="display:block;color:var(--gray);">CEO – Moda Livre</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="row justify-content-center">
+              <div class="col-md-8 col-lg-6">
+                <div class="testimonial-card">
+                  <div class="stars">★★★★★</div>
+                  <p>“A estratégia de SEO e conteúdo foi cirúrgica. Saímos da página 4 para a 1ª posição no Google em 6 meses. Recomendo de olhos fechados.”</p>
+                  <div class="author">
+                    <div class="avatar">TC</div>
+                    <div>
+                      <strong>Thiago C.</strong>
+                      <small style="display:block;color:var(--gray);">Fundador – EduTech</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="row justify-content-center">
+              <div class="col-md-8 col-lg-6">
+                <div class="testimonial-card">
+                  <div class="stars">★★★★★</div>
+                  <p>“Nunca tivemos um atendimento tão personalizado. O time entendeu nosso negócio e entregou campanhas que realmente geraram resultados.”</p>
+                  <div class="author">
+                    <div class="avatar">AL</div>
+                    <div>
+                      <strong>Ana L.</strong>
+                      <small style="display:block;color:var(--gray);">Diretora – Clínica Soma</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselDepoimentos" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Anterior</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselDepoimentos" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Próximo</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       BLOG (ARTIGOS)
+  ============================================================ -->
+  <section class="section-padding" id="blog" aria-labelledby="blog-title">
+    <div class="container">
+      <div class="text-center mb-5">
+        <p class="section-label">Blog</p>
+        <h2 class="section-title" id="blog-title">Conteúdos que ajudam seu negócio</h2>
+        <p class="section-subtitle mx-auto">Dicas, tendências e análises do mundo do marketing digital.</p>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-4">
+          <div class="blog-card">
+            <img src="https://images.unsplash.com/photo-1432889821006-c6c8d02b3db7?w=600&q=80" alt="SEO" loading="lazy" />
+            <div class="body">
+              <span class="tag">SEO</span>
+              <h6>Como escolher as palavras-chave certas para 2026</h6>
+              <p>Guia prático para encontrar termos com alto volume e baixa concorrência.</p>
+              <a href="#">Leia mais <i class="bi bi-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="blog-card">
+            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80" alt="Google Ads" loading="lazy" />
+            <div class="body">
+              <span class="tag">Mídia Paga</span>
+              <h6>Google Ads: orçamento otimizado para PMEs</h6>
+              <p>Estratégias para maximizar o ROI com verba limitada.</p>
+              <a href="#">Leia mais <i class="bi bi-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="blog-card">
+            <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=600&q=80" alt="CRO" loading="lazy" />
+            <div class="body">
+              <span class="tag">CRO</span>
+              <h6>10 técnicas de otimização de conversão para landing pages</h6>
+              <p>Aumente suas taxas de conversão com pequenas mudanças no design.</p>
+              <a href="#">Leia mais <i class="bi bi-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-center mt-4">
+        <a href="#" class="btn btn-outline-primary-custom">Ver todos os artigos</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CONTATO
+  ============================================================ -->
+  <section class="section-padding contact-section" id="contato" aria-labelledby="contato-title">
+    <div class="container">
+      <div class="row g-5">
+        <div class="col-lg-5">
+          <p class="section-label">Fale conosco</p>
+          <h2 class="section-title" id="contato-title">Vamos conversar sobre seu projeto?</h2>
+          <p style="color:var(--gray);margin-top:0.8rem;">
+            Preencha o formulário ou entre em contato por um dos canais abaixo. Respondemos em até 2 horas úteis.
+          </p>
+          <div class="mt-4">
+            <div class="contact-info-item">
+              <i class="bi bi-whatsapp"></i>
+              <div>
+                <strong>WhatsApp</strong>
+                <p style="margin:0;color:var(--gray);">(11) 9 9999-8888</p>
+              </div>
+            </div>
+            <div class="contact-info-item">
+              <i class="bi bi-envelope"></i>
+              <div>
+                <strong>E-mail</strong>
+                <p style="margin:0;color:var(--gray);">contato@voxdigital.com.br</p>
+              </div>
+            </div>
+            <div class="contact-info-item">
+              <i class="bi bi-geo-alt"></i>
+              <div>
+                <strong>Endereço</strong>
+                <p style="margin:0;color:var(--gray);">São Paulo – SP (atendimento remoto)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-7">
+          <form class="contact-form" id="contactForm" novalidate>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="nome" class="form-label fw-600">Nome completo *</label>
+                <input type="text" class="form-control" id="nome" placeholder="Seu nome" required />
+              </div>
+              <div class="col-md-6">
+                <label for="email" class="form-label fw-600">E-mail *</label>
+                <input type="email" class="form-control" id="email" placeholder="seu@email.com" required />
+              </div>
+              <div class="col-12">
+                <label for="telefone" class="form-label fw-600">Telefone</label>
+                <input type="tel" class="form-control" id="telefone" placeholder="(11) 9 9999-9999" />
+              </div>
+              <div class="col-12">
+                <label for="assunto" class="form-label fw-600">Assunto *</label>
+                <select class="form-select" id="assunto" required>
+                  <option value="">Selecione...</option>
+                  <option>SEO e Conteúdo</option>
+                  <option>Mídia Paga</option>
+                  <option>E-mail Marketing</option>
+                  <option>Growth Hacking</option>
+                  <option>Landing Pages</option>
+                  <option>Analytics</option>
+                  <option>Outro</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label for="mensagem" class="form-label fw-600">Mensagem *</label>
+                <textarea class="form-control" id="mensagem" rows="4" placeholder="Descreva seu desafio ou objetivo..." required></textarea>
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn btn-primary-custom w-100 py-3">
+                  <i class="bi bi-send me-2"></i>Enviar mensagem
+                </button>
+              </div>
+              <div class="col-12">
+                <div id="formFeedback" class="alert d-none" role="alert"></div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <footer>
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <div class="brand">Vox<span>Digital</span></div>
+          <p style="margin:1rem 0 1.5rem;max-width:300px;">
+            Estratégias de marketing digital baseadas em dados para fazer sua voz ser ouvida.
+          </p>
+          <div class="social">
+            <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+            <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+            <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+            <a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+          </div>
+        </div>
+        <div class="col-6 col-lg-2 offset-lg-1">
+          <h6 class="text-white fw-700 mb-3">Navegação</h6>
+          <ul class="list-unstyled" style="display:flex;flex-direction:column;gap:0.5rem;">
+            <li><a href="#home">Início</a></li>
+            <li><a href="#servicos">Serviços</a></li>
+            <li><a href="#portfolio">Portfólio</a></li>
+            <li><a href="#sobre">Sobre</a></li>
+            <li><a href="#blog">Blog</a></li>
+            <li><a href="#contato">Contato</a></li>
+          </ul>
+        </div>
+        <div class="col-6 col-lg-2">
+          <h6 class="text-white fw-700 mb-3">Serviços</h6>
+          <ul class="list-unstyled" style="display:flex;flex-direction:column;gap:0.5rem;">
+            <li><a href="#">SEO</a></li>
+            <li><a href="#">Google Ads</a></li>
+            <li><a href="#">E-mail Marketing</a></li>
+            <li><a href="#">Landing Pages</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-3">
+          <h6 class="text-white fw-700 mb-3">Newsletter</h6>
+          <p style="font-size:0.9rem;">Inscreva-se para receber dicas exclusivas.</p>
+          <div class="input-group">
+            <input type="email" class="form-control bg-transparent border-light text-white" placeholder="Seu e-mail" />
+            <button class="btn btn-primary-custom" type="button">OK</button>
+          </div>
+        </div>
+      </div>
+      <hr />
+      <div class="d-flex flex-wrap justify-content-between align-items-center">
+        <p class="mb-0" style="font-size:0.85rem;">© 2026 Vox Digital – Todos os direitos reservados.</p>
+        <div style="font-size:0.8rem;">
+          <a href="#" class="me-3">Política de Privacidade</a>
+          <a href="#">Termos de Uso</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       BOOTSTRAP JS
+  ============================================================ -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+  </script>
+
+  <!-- ============================================================
+       JAVASCRIPT PRINCIPAL (validação + interações)
+  ============================================================ -->
+  <script>
+    /**
+     * Vox Digital - Scripts principais
+     * Validação de formulário, animação de scroll, máscara de telefone.
+     */
+
+    // ── FORMULÁRIO DE CONTATO ──
+    (function() {
+      const form = document.getElementById('contactForm');
+      const feedback = document.getElementById('formFeedback');
+
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Limpa mensagem anterior
+        feedback.classList.add('d-none');
+        feedback.classList.remove('alert-danger', 'alert-success');
+
+        // Validação simples
+        const nome = document.getElementById('nome').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const assunto = document.getElementById('assunto').value;
+        const mensagem = document.getElementById('mensagem').value.trim();
+
+        if (!nome || !email || !assunto || !mensagem) {
+          feedback.textContent = 'Por favor, preencha todos os campos obrigatórios (*).';
+          feedback.classList.remove('d-none', 'alert-success');
+          feedback.classList.add('alert-danger');
+          return;
+        }
+
+        // Validação de e-mail
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+          feedback.textContent = 'Por favor, insira um e-mail válido.';
+          feedback.classList.remove('d-none', 'alert-success');
+          feedback.classList.add('alert-danger');
+          return;
+        }
+
+        // Simula envio (substituir por fetch real)
+        feedback.textContent = '✅ Mensagem enviada com sucesso! Retornaremos em até 2 horas.';
+        feedback.classList.remove('d-none', 'alert-danger');
+        feedback.classList.add('alert-success');
+
+        // Limpa campos (opcional)
+        form.reset();
+
+        // (Opcional) enviar para API real
+        // const data = { nome, email, assunto, mensagem };
+        // fetch('/api/contato', { method: 'POST', ... });
+      });
+    })();
+
+    // ── MÁSCARA DE TELEFONE ──
+    (function() {
+      const telInput = document.getElementById('telefone');
+      if (telInput) {
+        telInput.addEventListener('input', function(e) {
+          let v = e.target.value.replace(/\D/g, '');
+          if (v.length > 11) v = v.slice(0, 11);
+          if (v.length > 7) {
+            v = '(' + v.slice(0, 2) + ') ' + v.slice(2, 3) + ' ' + v.slice(3, 7) + '-' + v.slice(7);
+          } else if (v.length > 3) {
+            v = '(' + v.slice(0, 2) + ') ' + v.slice(2);
+          } else if (v.length > 0) {
+            v = '(' + v;
+          }
+          e.target.value = v;
+        });
+      }
+    })();
+
+    // ── ANIMAÇÃO DE ENTRADA (Intersection Observer) ──
+    (function() {
+      const animElements = document.querySelectorAll(
+        '.service-card, .portfolio-item, .blog-card, .testimonial-card, .hero .col-lg-6'
+      );
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+
+      animElements.forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(el);
+      });
+    })();
+
+    // ── SCROLL SUAVE (links internos) ──
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        if (href === '#') return;
+        const target = document.querySelector(href);
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          // Fecha menu mobile
+          const navCollapse = document.querySelector('.navbar-collapse');
+          if (navCollapse.classList.contains('show')) {
+            const bsCollapse = new bootstrap.Collapse(navCollapse, { toggle: false });
+            bsCollapse.hide();
+          }
+        }
+      });
+    });
+
+    console.log('🚀 Vox Digital – Site carregado com sucesso!');
+  </script>
+
+</body>
+</html>

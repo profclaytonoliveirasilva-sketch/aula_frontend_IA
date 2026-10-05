@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mercado Popular – Supermercado Online</title>
+  
+  <!-- Bootstrap 5 + Icons + Fonts -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── TOKENS ── */
+    :root {
+      --primary: #2A7F3E;
+      --secondary: #F5A623;
+      --dark: #1E1E2A;
+      --light-bg: #F8FAFC;
+      --shadow: 0 4px 16px rgba(0,0,0,0.06);
+      --radius: 16px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--light-bg);
+      padding-top: 70px;
+    }
+
+    /* ── NAVBAR ── */
+    .navbar-custom {
+      background: #fff;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      padding: 10px 0;
+    }
+    .navbar-brand {
+      font-weight: 800;
+      color: var(--primary) !important;
+      font-size: 1.6rem;
+    }
+    .navbar-brand span { color: var(--secondary); }
+    .btn-primary-custom {
+      background: var(--primary);
+      border: none;
+      border-radius: 30px;
+      padding: 0.5rem 1.8rem;
+      color: #fff;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+    .btn-primary-custom:hover {
+      background: #1E5E2E;
+      transform: scale(1.02);
+      color: #fff;
+    }
+    .btn-outline-custom {
+      border: 2px solid var(--primary);
+      color: var(--primary);
+      border-radius: 30px;
+      padding: 0.4rem 1.4rem;
+      font-weight: 600;
+      background: transparent;
+      transition: 0.3s;
+    }
+    .btn-outline-custom:hover {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    /* ── PRODUTOS ── */
+    .product-card {
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: #fff;
+      box-shadow: var(--shadow);
+      transition: 0.3s;
+      height: 100%;
+      border: 1px solid #eee;
+      cursor: pointer;
+    }
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+    }
+    .product-card img {
+      height: 160px;
+      object-fit: cover;
+      width: 100%;
+      background: #f0f0f0;
+    }
+    .product-card .info {
+      padding: 1rem 1rem 1.2rem;
+    }
+    .product-card .info h6 {
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 0.3rem;
+    }
+    .product-card .info .price {
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+    .product-card .info .old-price {
+      text-decoration: line-through;
+      color: #999;
+      font-size: 0.8rem;
+      margin-left: 0.5rem;
+    }
+    .product-card .btn-add {
+      background: var(--secondary);
+      border: none;
+      color: #fff;
+      border-radius: 30px;
+      padding: 0.2rem 1.2rem;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: 0.2s;
+    }
+    .product-card .btn-add:hover {
+      background: #D4911A;
+    }
+
+    /* ── CARRINHO SIDEBAR ── */
+    .cart-sidebar {
+      position: fixed;
+      right: 0;
+      top: 70px;
+      width: 360px;
+      height: calc(100vh - 70px);
+      background: #fff;
+      box-shadow: -4px 0 24px rgba(0,0,0,0.06);
+      padding: 1.5rem;
+      overflow-y: auto;
+      transform: translateX(100%);
+      transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 1040;
+      border-left: 1px solid #eee;
+    }
+    .cart-sidebar.open {
+      transform: translateX(0);
+    }
+    .cart-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.3);
+      z-index: 1039;
+      display: none;
+    }
+    .cart-overlay.open {
+      display: block;
+    }
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 0.9rem;
+    }
+    .cart-item .qty {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .cart-item .qty button {
+      background: #eee;
+      border: none;
+      border-radius: 50%;
+      width: 26px;
+      height: 26px;
+      font-weight: 700;
+      transition: 0.2s;
+    }
+    .cart-item .qty button:hover {
+      background: var(--primary);
+      color: #fff;
+    }
+    .cart-total {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--dark);
+      border-top: 2px solid var(--secondary);
+      padding-top: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    /* ── MODAL DETALHES ── */
+    .modal-product-img {
+      max-height: 300px;
+      object-fit: contain;
+      width: 100%;
+      border-radius: 8px;
+    }
+
+    /* ── FORMULÁRIO ── */
+    .form-control:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(42,127,62,0.15);
+    }
+    .form-label {
+      font-weight: 600;
+    }
+    .frete-info {
+      background: #e9f7ed;
+      border-radius: 12px;
+      padding: 0.8rem 1.2rem;
+      margin-top: 0.5rem;
+      display: none;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark);
+      color: rgba(255,255,255,0.7);
+      padding: 40px 0 20px;
+    }
+    footer a {
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+    }
+    footer a:hover { color: var(--secondary); }
+
+    /* ── RESPONSIVO ── */
+    @media (max-width: 768px) {
+      .cart-sidebar {
+        width: 100%;
+        top: 60px;
+        height: calc(100vh - 60px);
+      }
+      .product-card img { height: 130px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ============================================================
+       NAVBAR
+  ============================================================ -->
+  <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">Mercado <span>Popular</span></a>
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <i class="bi bi-list fs-2"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-2 gap-lg-3 py-2 py-lg-0">
+          <li class="nav-item"><a class="nav-link active" href="#produtos">Produtos</a></li>
+          <li class="nav-item"><a class="nav-link" href="#cadastro">Cadastro</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contato">Fale Conosco</a></li>
+          <li class="nav-item">
+            <button class="btn btn-primary-custom btn-sm" onclick="toggleCart()">
+              <i class="bi bi-cart3 me-1"></i>Carrinho <span id="cartCount" class="badge bg-secondary text-white ms-1">0</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============================================================
+       CARRINHO (SIDEBAR)
+  ============================================================ -->
+  <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+  <div class="cart-sidebar" id="cartSidebar">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h5 class="fw-700"><i class="bi bi-cart3 me-2"></i>Meu Carrinho</h5>
+      <button class="btn-close" onclick="toggleCart()"></button>
+    </div>
+    <div id="cartItems">
+      <p class="text-muted text-center">Seu carrinho está vazio.</p>
+    </div>
+    <div id="cartFooter" style="display:none;">
+      <div class="d-flex justify-content-between fw-600">
+        <span>Subtotal</span>
+        <span id="cartSubtotal">R$ 0,00</span>
+      </div>
+      <div class="d-flex justify-content-between text-muted small">
+        <span>Frete</span>
+        <span id="cartFrete">R$ 0,00</span>
+      </div>
+      <div class="cart-total d-flex justify-content-between">
+        <span>Total</span>
+        <span id="cartTotal">R$ 0,00</span>
+      </div>
+      <button class="btn btn-primary-custom w-100 mt-3" onclick="finalizarPedido()">
+        <i class="bi bi-whatsapp me-2"></i>Finalizar pelo WhatsApp
+      </button>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       PRODUTOS
+  ============================================================ -->
+  <section class="py-4" id="produtos">
+    <div class="container">
+      <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+        <h2 class="fw-800">Nossos Produtos</h2>
+        <input type="text" id="searchProd" class="form-control" placeholder="Buscar produto..." style="width:220px;" oninput="filtrarProdutos(this.value)">
+      </div>
+
+      <!-- Filtros por categoria -->
+      <div class="mb-3 d-flex flex-wrap gap-2">
+        <button class="btn btn-outline-custom btn-sm" onclick="filtrarCategoria('todos')">Todos</button>
+        <button class="btn btn-outline-custom btn-sm" onclick="filtrarCategoria('Bebidas')">Bebidas</button>
+        <button class="btn btn-outline-custom btn-sm" onclick="filtrarCategoria('Laticínios')">Laticínios</button>
+        <button class="btn btn-outline-custom btn-sm" onclick="filtrarCategoria('Carnes')">Carnes</button>
+        <button class="btn btn-outline-custom btn-sm" onclick="filtrarCategoria('Grãos')">Grãos</button>
+        <button class="btn btn-outline-custom btn-sm" onclick="filtrarCategoria('Higiene')">Higiene</button>
+        <button class="btn btn-outline-custom btn-sm" onclick="filtrarCategoria('Limpeza')">Limpeza</button>
+        <button class="btn btn-outline-custom btn-sm" onclick="filtrarCategoria('Padaria')">Padaria</button>
+        <button class="btn btn-outline-custom btn-sm" onclick="filtrarCategoria('Congelados')">Congelados</button>
+        <button class="btn btn-outline-custom btn-sm" onclick="filtrarCategoria('Frutas')">Frutas</button>
+        <button class="btn btn-outline-custom btn-sm" onclick="filtrarCategoria('Legumes')">Legumes</button>
+      </div>
+
+      <div class="row g-3" id="productGrid">
+        <!-- Renderizado pelo JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CADASTRO DE CLIENTE
+  ============================================================ -->
+  <section class="py-4 bg-light" id="cadastro">
+    <div class="container">
+      <h2 class="fw-800 text-center mb-4">Cadastre-se para comprar</h2>
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <form id="cadastroForm" class="bg-white p-4 rounded-4 shadow-sm">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Nome completo *</label>
+                <input type="text" class="form-control" id="nomeCliente" required placeholder="Seu nome">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">CPF *</label>
+                <input type="text" class="form-control" id="cpfCliente" required placeholder="000.000.000-00" maxlength="14">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">CEP *</label>
+                <input type="text" class="form-control" id="cepCliente" required placeholder="00000-000" maxlength="9">
+              </div>
+              <div class="col-md-8">
+                <label class="form-label">Endereço *</label>
+                <input type="text" class="form-control" id="enderecoCliente" required placeholder="Rua, Av..." readonly>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Número *</label>
+                <input type="text" class="form-control" id="numeroCliente" required placeholder="123">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Complemento</label>
+                <input type="text" class="form-control" id="complementoCliente" placeholder="Apto, Bloco...">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Bairro</label>
+                <input type="text" class="form-control" id="bairroCliente" readonly>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Cidade</label>
+                <input type="text" class="form-control" id="cidadeCliente" readonly>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">UF</label>
+                <input type="text" class="form-control" id="ufCliente" readonly>
+              </div>
+            </div>
+
+            <div class="frete-info" id="freteInfo">
+              <i class="bi bi-truck me-2"></i>
+              Taxa de entrega estimada: <strong id="freteValor">R$ 0,00</strong>
+            </div>
+
+            <div class="mt-3 form-check">
+              <input type="checkbox" class="form-check-input" id="termos" required>
+              <label class="form-check-label" for="termos">Li e aceito os <a href="#" data-bs-toggle="modal" data-bs-target="#politicaModal">Termos de Uso e Política de Privacidade</a>.</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary-custom w-100 mt-3">
+              <i class="bi bi-check-circle me-2"></i>Cadastrar e continuar
+            </button>
+            <div id="cadastroFeedback" class="mt-2"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FALE CONOSCO
+  ============================================================ -->
+  <section class="py-4" id="contato">
+    <div class="container text-center">
+      <h2 class="fw-800 mb-3">Fale Conosco</h2>
+      <p class="text-muted">Entre em contato com nossa central de atendimento.</p>
+      <div class="row justify-content-center g-4">
+        <div class="col-md-4">
+          <div class="bg-white p-4 rounded-4 shadow-sm">
+            <i class="bi bi-whatsapp fs-1" style="color:#25D366;"></i>
+            <h5 class="mt-2">WhatsApp</h5>
+            <p class="text-muted">(11) 9 9999-8888 (simulação)</p>
+            <button class="btn btn-outline-custom btn-sm" onclick="alert('Simulação: abriria o WhatsApp para (11) 9 9999-8888')">Falar agora</button>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="bg-white p-4 rounded-4 shadow-sm">
+            <i class="bi bi-telephone fs-1" style="color:var(--primary);"></i>
+            <h5 class="mt-2">Telefone</h5>
+            <p class="text-muted">(11) 4002-8922 (simulação)</p>
+            <button class="btn btn-outline-custom btn-sm" onclick="alert('Simulação: ligaria para (11) 4002-8922')">Ligar</button>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="bg-white p-4 rounded-4 shadow-sm">
+            <i class="bi bi-envelope fs-1" style="color:var(--secondary);"></i>
+            <h5 class="mt-2">E-mail</h5>
+            <p class="text-muted">atendimento@mercadopopular.com.br</p>
+            <button class="btn btn-outline-custom btn-sm" onclick="alert('Simulação: enviar e-mail para atendimento@mercadopopular.com.br')">Enviar e-mail</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       MODAL DETALHES DO PRODUTO
+  ============================================================ -->
+  <div class="modal fade" id="detalheModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="detalheNome">Produto</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <img src="" id="detalheImagem" class="modal-product-img" alt="">
+            </div>
+            <div class="col-md-6">
+              <h4 id="detalheNome2"></h4>
+              <p class="text-muted" id="detalheCategoria"></p>
+              <h3 class="text-primary" id="detalhePreco">R$ 0,00</h3>
+              <p id="detalheDescricao"></p>
+              <button class="btn btn-primary-custom" onclick="adicionarDoModal()">
+                <i class="bi bi-cart-plus me-2"></i>Adicionar ao carrinho
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       MODAL POLÍTICA
+  ============================================================ -->
+  <div class="modal fade" id="politicaModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Política de Privacidade</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p>Seus dados são coletados apenas para processamento de pedidos e envio de comunicações. Não compartilhamos com terceiros. Em conformidade com a LGPD, você pode solicitar remoção a qualquer momento.</p>
+          <p class="small text-muted">Esta é uma simulação para fins educacionais.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <footer class="mt-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4">
+          <h5 class="text-white">Mercado Popular</h5>
+          <p>Seu supermercado online com os melhores preços e entrega rápida.</p>
+        </div>
+        <div class="col-lg-2">
+          <h6 class="text-white">Links</h6>
+          <ul class="list-unstyled">
+            <li><a href="#produtos">Produtos</a></li>
+            <li><a href="#cadastro">Cadastro</a></li>
+            <li><a href="#contato">Contato</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-3">
+          <h6 class="text-white">Contato</h6>
+          <p><i class="bi bi-whatsapp me-2"></i>(11) 9 9999-8888</p>
+          <p><i class="bi bi-envelope me-2"></i>atendimento@mercadopopular.com.br</p>
+        </div>
+        <div class="col-lg-3">
+          <h6 class="text-white">Segurança</h6>
+          <p><i class="bi bi-shield-check me-2"></i>Dados protegidos</p>
+          <p><i class="bi bi-lock me-2"></i>Pagamento seguro</p>
+        </div>
+      </div>
+      <hr class="border-secondary">
+      <div class="text-center">© 2026 Mercado Popular – Todos os direitos reservados. (Site simulado para fins educacionais)</div>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       BOOTSTRAP JS
+  ============================================================ -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- ============================================================
+       JAVASCRIPT PRINCIPAL
+  ============================================================ -->
+  <script>
+    // ============================================================
+    // 1. GERADOR DE 120 PRODUTOS COM IMAGENS REALISTAS (LoremFlickr)
+    // ============================================================
+    const categorias = ['Bebidas', 'Laticínios', 'Carnes', 'Grãos', 'Higiene', 'Limpeza', 'Padaria', 'Congelados', 'Frutas', 'Legumes'];
+    const nomes = [
+      'Arroz Branco 5kg', 'Feijão Preto 1kg', 'Açúcar Refinado 1kg', 'Café em Pó 500g', 'Leite Integral 1L',
+      'Pão de Forma 500g', 'Queijo Mussarela 500g', 'Presunto 300g', 'Frango Congelado 1kg', 'Carne Moída 500g',
+      'Refrigerante 2L', 'Suco de Laranja 1L', 'Água Mineral 500ml', 'Cerveja 350ml', 'Vinho Tinto 750ml',
+      'Sabonete 100g', 'Shampoo 250ml', 'Condicionador 250ml', 'Pasta de Dente 90g', 'Desodorante 150ml',
+      'Detergente 500ml', 'Água Sanitária 1L', 'Desinfetante 500ml', 'Esponja de Aço', 'Saco de Lixo 30L',
+      'Macarrão 500g', 'Farinha de Trigo 1kg', 'Óleo de Soja 900ml', 'Vinagre 500ml', 'Molho de Tomate 340g',
+      'Batata 1kg', 'Cebola 1kg', 'Tomate 1kg', 'Alface', 'Banana Prata 1kg',
+      'Maçã 1kg', 'Laranja 1kg', 'Mamão 1kg', 'Abacaxi', 'Melão',
+      'Pão Francês 6un', 'Bolo de Chocolate', 'Torta de Frango', 'Pizza Congelada', 'Hambúrguer 500g',
+      'Salsicha 500g', 'Bacon 200g', 'Linguiça 500g', 'Peito de Peru 300g', 'Mortadela 300g',
+      'Requeijão 500g', 'Iogurte 200g', 'Manteiga 200g', 'Margarina 500g', 'Creme de Leite 200g',
+      'Leite Condensado 395g', 'Chocolate em Pó 400g', 'Granola 500g', 'Cereal Matinal 300g', 'Biscoito Cream Cracker',
+      'Geleia 300g', 'Mel 500g', 'Azeite de Oliva 500ml', 'Sal 1kg', 'Tempero Completo',
+      'Molho de Soja 200ml', 'Maionese 500g', 'Ketchup 400g', 'Mostarda 400g', 'Ervilha 200g',
+      'Milho Verde 200g', 'Palmito 300g', 'Atum 170g', 'Sardinha 125g', 'Patê de Fígado 150g',
+      'Refresco em Pó 30g', 'Gelatina 40g', 'Fermento 100g', 'Coco Ralado 100g', 'Leite de Coco 200ml',
+      'Fubá 500g', 'Farinha de Milho 500g', 'Polvilho 500g', 'Creme de Cebola 50g', 'Caldo de Carne 120g',
+      'Sopa de Legumes 120g', 'Macarrão Instantâneo', 'Pipoca 100g', 'Amendoim 200g', 'Castanha 100g',
+      'Semente de Girassol 100g', 'Aveia 500g', 'Farinha Láctea 400g', 'Achocolatado 400g', 'Biscoito Recheado',
+      'Bala 100g', 'Chiclete 50g', 'Pirulito 30g', 'Doce de Leite 300g', 'Goiabada 300g',
+      'Manga 1kg', 'Pera 1kg', 'Uva 1kg', 'Melancia', 'Maracujá',
+      'Cenoura 1kg', 'Abobrinha 1kg', 'Pimentão', 'Couve', 'Brócolis'
+    ];
+    // Pegamos 120 primeiros
+    const produtosSelecionados = nomes.slice(0, 120);
+
+    // Mapeia categoria para palavra-chave em inglês (para o Flickr)
+    const categoriaEn = {
+      'Bebidas': 'drinks',
+      'Laticínios': 'dairy',
+      'Carnes': 'meat',
+      'Grãos': 'grains',
+      'Higiene': 'hygiene',
+      'Limpeza': 'cleaning',
+      'Padaria': 'bakery',
+      'Congelados': 'frozen',
+      'Frutas': 'fruits',
+      'Legumes': 'vegetables'
+    };
+
+    const produtos = produtosSelecionados.map((nome, index) => {
+      // Atribui categoria de forma cíclica (equilibrada)
+      const categoria = categorias[index % categorias.length];
+      const preco = (Math.random() * 25 + 1.99).toFixed(2);
+      const descricoes = [
+        'Produto de alta qualidade, perfeito para o dia a dia.',
+        'Fresco e saboroso, direto do produtor rural.',
+        'Ótimo custo-benefício, a escolha certa para sua família.',
+        'Produto selecionado com padrão de excelência.',
+        'Fonte de nutrientes essenciais para uma vida saudável.'
+      ];
+      const descricao = descricoes[Math.floor(Math.random() * descricoes.length)];
+
+      // Gera imagem realista baseada na categoria
+      const tag = categoriaEn[categoria] || categoria.toLowerCase();
+      const imagem = `https://loremflickr.com/300/200/${tag}?random=${index + 100}`;
+
+      return {
+        id: index + 1,
+        nome: nome,
+        categoria: categoria,
+        preco: parseFloat(preco),
+        descricao: `${nome} – ${descricao}`,
+        imagem: imagem
+      };
+    });
+
+    // ============================================================
+    // 2. ESTADO DO CARRINHO E CLIENTE
+    // ============================================================
+    let carrinho = [];
+    let cliente = null;
+    let freteAtual = 0;
+
+    // ============================================================
+    // 3. RENDERIZAR PRODUTOS
+    // ============================================================
+    const grid = document.getElementById('productGrid');
+    let currentFilter = 'todos';
+
+    function renderizarProdutos(filtro = 'todos', busca = '') {
+      const lista = produtos.filter(p => {
+        const matchCat = filtro === 'todos' || p.categoria === filtro;
+        const matchBusca = p.nome.toLowerCase().includes(busca.toLowerCase()) ||
+                           p.categoria.toLowerCase().includes(busca.toLowerCase());
+        return matchCat && matchBusca;
+      });
+
+      if (lista.length === 0) {
+        grid.innerHTML = `<div class="col-12 text-center text-muted py-5">Nenhum produto encontrado.</div>`;
+        return;
+      }
+
+      grid.innerHTML = lista.map(p => `
+        <div class="col-6 col-md-4 col-lg-3">
+          <div class="product-card" onclick="abrirDetalhe(${p.id})">
+            <img src="${p.imagem}" alt="${p.nome}" loading="lazy">
+            <div class="info">
+              <h6>${p.nome}</h6>
+              <span class="badge bg-secondary">${p.categoria}</span>
+              <div class="mt-1">
+                <span class="price">R$ ${p.preco.toFixed(2)}</span>
+                <span class="old-price">R$ ${(p.preco * 1.2).toFixed(2)}</span>
+              </div>
+              <button class="btn-add mt-2" onclick="event.stopPropagation(); adicionarAoCarrinho(${p.id})">
+                <i class="bi bi-cart-plus me-1"></i>Adicionar
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Filtros
+    function filtrarCategoria(cat) {
+      currentFilter = cat;
+      const busca = document.getElementById('searchProd').value;
+      renderizarProdutos(cat, busca);
+    }
+
+    function filtrarProdutos(valor) {
+      renderizarProdutos(currentFilter, valor);
+    }
+
+    // ============================================================
+    // 4. MODAL DE DETALHES
+    // ============================================================
+    let detalheId = null;
+
+    function abrirDetalhe(id) {
+      const p = produtos.find(prod => prod.id === id);
+      if (!p) return;
+      detalheId = id;
+      document.getElementById('detalheNome').textContent = p.nome;
+      document.getElementById('detalheNome2').textContent = p.nome;
+      document.getElementById('detalheCategoria').textContent = `Categoria: ${p.categoria}`;
+      document.getElementById('detalhePreco').textContent = `R$ ${p.preco.toFixed(2)}`;
+      document.getElementById('detalheDescricao').textContent = p.descricao;
+      document.getElementById('detalheImagem').src = p.imagem;
+      const modal = new bootstrap.Modal(document.getElementById('detalheModal'));
+      modal.show();
+    }
+
+    function adicionarDoModal() {
+      if (detalheId) {
+        adicionarAoCarrinho(detalheId);
+        const modal = bootstrap.Modal.getInstance(document.getElementById('detalheModal'));
+        modal.hide();
+      }
+    }
+
+    // ============================================================
+    // 5. CARRINHO - ADICIONAR/REMOVER
+    // ============================================================
+    function adicionarAoCarrinho(id) {
+      const prod = produtos.find(p => p.id === id);
+      if (!prod) return;
+      const item = carrinho.find(i => i.id === id);
+      if (item) {
+        item.qtd++;
+      } else {
+        carrinho.push({ ...prod, qtd: 1 });
+      }
+      atualizarCarrinho();
+      // Feedback visual
+      const btn = event?.target?.closest('.btn-add');
+      if (btn) {
+        btn.textContent = '✓ Adicionado';
+        setTimeout(() => { btn.innerHTML = '<i class="bi bi-cart-plus me-1"></i>Adicionar'; }, 800);
+      }
+    }
+
+    function removerDoCarrinho(id) {
+      const idx = carrinho.findIndex(i => i.id === id);
+      if (idx === -1) return;
+      if (carrinho[idx].qtd > 1) {
+        carrinho[idx].qtd--;
+      } else {
+        carrinho.splice(idx, 1);
+      }
+      atualizarCarrinho();
+    }
+
+    function removerItemCompleto(id) {
+      carrinho = carrinho.filter(i => i.id !== id);
+      atualizarCarrinho();
+    }
+
+    // ============================================================
+    // 6. ATUALIZAR CARRINHO (UI e totais)
+    // ============================================================
+    function atualizarCarrinho() {
+      const container = document.getElementById('cartItems');
+      const footer = document.getElementById('cartFooter');
+      const count = document.getElementById('cartCount');
+      const subtotalEl = document.getElementById('cartSubtotal');
+      const freteEl = document.getElementById('cartFrete');
+      const totalEl = document.getElementById('cartTotal');
+
+      const totalItens = carrinho.reduce((acc, i) => acc + i.qtd, 0);
+      count.textContent = totalItens;
+
+      if (carrinho.length === 0) {
+        container.innerHTML = `<p class="text-muted text-center">Seu carrinho está vazio.</p>`;
+        footer.style.display = 'none';
+        return;
+      }
+
+      const subtotal = carrinho.reduce((acc, i) => acc + i.preco * i.qtd, 0);
+      const frete = cliente ? freteAtual : 0;
+      const total = subtotal + frete;
+
+      subtotalEl.textContent = `R$ ${subtotal.toFixed(2)}`;
+      freteEl.textContent = `R$ ${frete.toFixed(2)}`;
+      totalEl.textContent = `R$ ${total.toFixed(2)}`;
+
+      container.innerHTML = carrinho.map(i => `
+        <div class="cart-item">
+          <span>${i.nome}</span>
+          <div class="qty">
+            <button onclick="removerDoCarrinho(${i.id})">-</button>
+            <span>${i.qtd}</span>
+            <button onclick="adicionarAoCarrinho(${i.id})">+</button>
+            <button class="btn btn-sm text-danger" onclick="removerItemCompleto(${i.id})"><i class="bi bi-trash"></i></button>
+          </div>
+          <span>R$ ${(i.preco * i.qtd).toFixed(2)}</span>
+        </div>
+      `).join('');
+
+      footer.style.display = 'block';
+    }
+
+    // ============================================================
+    // 7. ABRIR/FECHAR CARRINHO
+    // ============================================================
+    function toggleCart() {
+      const sidebar = document.getElementById('cartSidebar');
+      const overlay = document.getElementById('cartOverlay');
+      sidebar.classList.toggle('open');
+      overlay.classList.toggle('open');
+    }
+
+    // ============================================================
+    // 8. CADASTRO DE CLIENTE + VIA CEP + FRETE
+    // ============================================================
+    const cepInput = document.getElementById('cepCliente');
+    const enderecoInput = document.getElementById('enderecoCliente');
+    const bairroInput = document.getElementById('bairroCliente');
+    const cidadeInput = document.getElementById('cidadeCliente');
+    const ufInput = document.getElementById('ufCliente');
+    const freteInfo = document.getElementById('freteInfo');
+    const freteValor = document.getElementById('freteValor');
+
+    // Máscara CPF
+    document.getElementById('cpfCliente').addEventListener('input', function(e) {
+      let v = e.target.value.replace(/\D/g, '');
+      if (v.length > 11) v = v.slice(0, 11);
+      if (v.length > 9) {
+        v = v.slice(0, 3) + '.' + v.slice(3, 6) + '.' + v.slice(6, 9) + '-' + v.slice(9);
+      } else if (v.length > 6) {
+        v = v.slice(0, 3) + '.' + v.slice(3, 6) + '.' + v.slice(6);
+      } else if (v.length > 3) {
+        v = v.slice(0, 3) + '.' + v.slice(3);
+      }
+      e.target.value = v;
+    });
+
+    // Máscara CEP e consulta
+    cepInput.addEventListener('input', function(e) {
+      let v = e.target.value.replace(/\D/g, '');
+      if (v.length > 8) v = v.slice(0, 8);
+      if (v.length > 5) {
+        v = v.slice(0, 5) + '-' + v.slice(5);
+      }
+      e.target.value = v;
+
+      if (v.length === 9) {
+        consultarCep(v.replace('-', ''));
+      } else {
+        enderecoInput.value = '';
+        bairroInput.value = '';
+        cidadeInput.value = '';
+        ufInput.value = '';
+        freteInfo.style.display = 'none';
+        freteAtual = 0;
+        if (carrinho.length > 0) atualizarCarrinho();
+      }
+    });
+
+    async function consultarCep(cep) {
+      try {
+        const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+        const data = await res.json();
+        if (data.erro) {
+          alert('CEP não encontrado.');
+          return;
+        }
+        enderecoInput.value = data.logradouro || '';
+        bairroInput.value = data.bairro || '';
+        cidadeInput.value = data.localidade || '';
+        ufInput.value = data.uf || '';
+
+        // Calcular frete
+        const inicio = parseInt(cep.substring(0, 5));
+        let taxa = 15;
+        if (inicio >= 1000 && inicio <= 9999) taxa = 5;
+        else if (inicio >= 10000 && inicio <= 19999) taxa = 8;
+        else if (inicio >= 20000 && inicio <= 29999) taxa = 10;
+        freteAtual = taxa;
+        freteValor.textContent = `R$ ${taxa.toFixed(2)}`;
+        freteInfo.style.display = 'block';
+        if (carrinho.length > 0) atualizarCarrinho();
+      } catch (err) {
+        console.error('Erro ao consultar CEP:', err);
+        alert('Não foi possível consultar o CEP. Tente novamente.');
+      }
+    }
+
+    // ============================================================
+    // 9. SUBMISSÃO DO CADASTRO
+    // ============================================================
+    document.getElementById('cadastroForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const nome = document.getElementById('nomeCliente').value.trim();
+      const cpf = document.getElementById('cpfCliente').value.trim();
+      const cep = document.getElementById('cepCliente').value.trim();
+      const endereco = document.getElementById('enderecoCliente').value.trim();
+      const numero = document.getElementById('numeroCliente').value.trim();
+      const complemento = document.getElementById('complementoCliente').value.trim();
+      const bairro = document.getElementById('bairroCliente').value.trim();
+      const cidade = document.getElementById('cidadeCliente').value.trim();
+      const uf = document.getElementById('ufCliente').value.trim();
+      const termos = document.getElementById('termos').checked;
+
+      if (!nome || !cpf || !cep || !endereco || !numero || !termos) {
+        document.getElementById('cadastroFeedback').innerHTML = `<div class="alert alert-danger">Preencha todos os campos obrigatórios e aceite os termos.</div>`;
+        return;
+      }
+
+      cliente = { nome, cpf, cep, endereco, numero, complemento, bairro, cidade, uf };
+      document.getElementById('cadastroFeedback').innerHTML = `<div class="alert alert-success">Cadastro realizado com sucesso! Agora você pode finalizar seu pedido.</div>`;
+      if (carrinho.length > 0) atualizarCarrinho();
+    });
+
+    // ============================================================
+    // 10. FINALIZAR PEDIDO (WHATSAPP)
+    // ============================================================
+    function finalizarPedido() {
+      if (carrinho.length === 0) {
+        alert('Seu carrinho está vazio. Adicione produtos antes de finalizar.');
+        return;
+      }
+      if (!cliente) {
+        alert('Por favor, faça seu cadastro antes de finalizar o pedido.');
+        document.getElementById('cadastro').scrollIntoView({ behavior: 'smooth' });
+        return;
+      }
+
+      const subtotal = carrinho.reduce((acc, i) => acc + i.preco * i.qtd, 0);
+      const total = subtotal + freteAtual;
+
+      let msg = `🛒 *Novo pedido - Mercado Popular*%0A`;
+      msg += `%0A👤 *Cliente:* ${cliente.nome}`;
+      msg += `%0A📍 *Endereço:* ${cliente.endereco}, ${cliente.numero}${cliente.complemento ? ', '+cliente.complemento : ''} - ${cliente.bairro} - ${cliente.cidade} - ${cliente.uf} - CEP ${cliente.cep}`;
+      msg += `%0A📦 *Itens do pedido:*%0A`;
+      carrinho.forEach(i => {
+        msg += `${i.qtd}x ${i.nome} - R$ ${(i.preco * i.qtd).toFixed(2)}%0A`;
+      });
+      msg += `%0A💰 *Subtotal:* R$ ${subtotal.toFixed(2)}`;
+      msg += `%0A🚚 *Frete:* R$ ${freteAtual.toFixed(2)}`;
+      msg += `%0A💵 *Total:* R$ ${total.toFixed(2)}`;
+      msg += `%0A%0A🔗 Enviado pelo site.`;
+
+      // Número do WhatsApp (substitua pelo seu se quiser)
+      const numero = '5521998486422'; // (21) 99848-6422
+      const url = `https://api.whatsapp.com/send?phone=${numero}&text=${msg}`;
+      window.open(url, '_blank');
+
+      // Limpa carrinho após envio
+      carrinho = [];
+      atualizarCarrinho();
+      toggleCart();
+    }
+
+    // ============================================================
+    // 11. INICIALIZAÇÃO
+    // ============================================================
+    renderizarProdutos();
+  </script>
+</body>
+</html>
